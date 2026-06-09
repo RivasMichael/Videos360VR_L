@@ -157,12 +157,13 @@
             const c = document.createElement('canvas');
             c.width = size; c.height = size;
             const ctx = c.getContext('2d');
+            ctx.fillStyle = '#0d0d1a';
+            ctx.fillRect(0, 0, size, size);
             const fns = { historia: drawHistoriaIcon, fundador: drawFundadorIcon, carreras: drawCarrerasIcon, labs: drawLabsIcon, tour: drawTourIcon, pronto: drawProntoIcon, youtube: drawYoutubeIcon };
             if (fns[self.data.type]) fns[self.data.type](ctx, size);
             const tex = new THREE.CanvasTexture(c);
             mesh.material.map = tex;
-            mesh.material.transparent = true;
-            mesh.material.alphaTest = 0.01;
+            mesh.material.transparent = false;
             mesh.material.needsUpdate = true;
           };
           this.el.addEventListener('object3dset', this._apply);
@@ -331,6 +332,7 @@
     <img id="imgEvento" src="fuentte.jpg">
     <img id="imgLabsNuevos" src="eventoss.jpg">
 
+    <img id="imgPiso" src="pisologo.webp">
     <img id="imagenLibro" src="libroo.png" crossorigin="anonymous">
      
     <audio id="audioBienvenida" src="audio.mp3" preload="auto" crossorigin="anonymous"></audio>
@@ -339,12 +341,19 @@
     <video id="videoFundador" src="video6a.mp4" crossorigin="anonymous" playsinline webkit-playsinline preload="auto"></video>
     <video id="video8" src="cars.mp4" crossorigin="anonymous" playsinline webkit-playsinline preload="auto"></video>
     <video id="video7a" src="video7a.mp4" crossorigin="anonymous" playsinline webkit-playsinline preload="auto"></video>
-    <video id="videoRobotica" src="https://esanlabs.blob.core.windows.net/media/robotica_175.mp4?se=2027-01-01&sp=r&spr=https&sv=2026-04-06&sr=b&sig=tV4d477QND3wt38ielNcsUpZxJ2n2waH36fXd%2F7aSHg%3D" crossorigin="anonymous" playsinline webkit-playsinline preload="metadata"></video>
+    <video id="videoRobotica" src="https://esanlabs.blob.core.windows.net/media/robotica_175.mp4?sv=2025-07-05&spr=https&st=2026-06-09T00%3A30%3A06Z&se=2027-06-10T00%3A30%3A00Z&sr=b&sp=r&sig=vmMtpmUZ4IzcfrQwpG1w%2Bz7m5%2Fb5OOnADNRd4lW6YOM%3D" crossorigin="anonymous" playsinline webkit-playsinline preload="metadata"></video>
   </a-assets>
 
   <a-sky id="skyPrincipal" src="#imgLobby" radius="40" rotation="0 -90 0"></a-sky>
 
   <a-videosphere id="esferaRobotica" src="#videoRobotica" rotation="0 -90 0" visible="false"></a-videosphere>
+
+  <a-circle id="pisoLogo"
+            src="#imgPiso"
+            radius="0.83"
+            rotation="-90 0 0"
+            position="0 0.01 0"
+            material="shader: flat; transparent: true"></a-circle>
   
   <a-entity cubos-digitales></a-entity>
 
@@ -358,7 +367,7 @@
             animation__aclarar="property: material.opacity; to: 0; dur: 1000; startEvents: luzOn">
   </a-entity>
 
-  <a-entity id="panelBienvenida" position="0 1.6 -15"
+  <a-entity id="panelBienvenida" visible="false" position="0 1.6 -15"
             animation__pos="property: position; to: 0 1.6 -2.5; dur: 8000; easing: easeOutCubic; delay: 500"
             animation__fade="property: material.opacity; from: 1; to: 0; dur: 2000; delay: 8000"
             animation__visible="property: visible; to: false; delay: 10000">
@@ -369,8 +378,8 @@
   </a-entity>
 
 
-  <a-entity id="panelPresentacionEsan" position="0.55 2.35 -2.5" scale="0 0 0"
-            animation__entrar="property: scale; from: 0 0 0; to: 1 1 1; dur: 900; easing: easeOutBack; delay: 1200">
+  <a-entity id="panelPresentacionEsan" position="0.55 2.82 -15" scale="1 1 1"
+            animation__entrar="property: position; from: 0.55 2.82 -15; to: 0.55 2.82 -2.5; dur: 7000; easing: easeOutCubic; delay: 500">
     <a-entity geometry="primitive: plane; width: 5.2; height: 0.58" material="shader: flat; color: #1A1A1A; opacity: 0.85; transparent: true"></a-entity>
     <a-entity geometry="primitive: plane; width: 5.24; height: 0.62" position="0 0 -0.01" material="shader: flat; color: #FFFFFF; opacity: 0.5; transparent: true"></a-entity>
     <a-text value="BIENVENIDO AL UNIVERSO ESAN" color="#E3173E" align="center" width="4.6" font="https://cdn.aframe.io/fonts/Roboto-msdf.json" shader="msdf" position="0 0.11 0.02"></a-text>
@@ -473,7 +482,7 @@
     <a-circle id="btnAccion" class="clickable" color="#0d0d1a" opacity="0.95" radius="0.4"
               animation__mouseenter="property: scale; to: 1.2 1.2 1.2; dur: 300; startEvents: mouseenter"
               animation__mouseleave="property: scale; to: 1 1 1; dur: 300; startEvents: mouseleave">
-      <a-plane width="0.76" height="0.76" canvas-icon="type: historia" material="shader: flat; transparent: true" position="0 0 0.02"></a-plane>
+      <a-circle radius="0.38" canvas-icon="type: historia" material="shader: flat" position="0 0 0.02"></a-circle>
     </a-circle>
     <a-text value="Nuestra\nHistoria" align="center" baseline="top" width="1.2" wrap-count="12" font="https://cdn.aframe.io/fonts/Roboto-msdf.json" shader="msdf" color="#000000" position="0.01 -0.49 0.04"></a-text>
     <a-text id="textoBoton" value="Nuestra\nHistoria" align="center" baseline="top" width="1.2" wrap-count="12" font="https://cdn.aframe.io/fonts/Roboto-msdf.json" shader="msdf" color="#FFFFFF" position="0 -0.48 0.05"></a-text>
@@ -490,7 +499,7 @@
     <a-circle id="btnFundador" class="clickable" color="#0d0d1a" opacity="0.95" radius="0.4"
               animation__mouseenter="property: scale; to: 1.2 1.2 1.2; dur: 300; startEvents: mouseenter"
               animation__mouseleave="property: scale; to: 1 1 1; dur: 300; startEvents: mouseleave">
-      <a-plane width="0.76" height="0.76" canvas-icon="type: fundador" material="shader: flat; transparent: true" position="0 0 0.02"></a-plane>
+      <a-circle radius="0.38" canvas-icon="type: fundador" material="shader: flat" position="0 0 0.02"></a-circle>
     </a-circle>
     <a-text value="Nuestro\nFundador" align="center" baseline="top" width="1.2" wrap-count="12" font="https://cdn.aframe.io/fonts/Roboto-msdf.json" shader="msdf" color="#000000" position="0.01 -0.49 0.04"></a-text>
     <a-text id="textoBotonFundador" value="Nuestro\nFundador" align="center" baseline="top" width="1.2" wrap-count="12" font="https://cdn.aframe.io/fonts/Roboto-msdf.json" shader="msdf" color="#FFFFFF" position="0 -0.48 0.05"></a-text>
@@ -506,8 +515,8 @@
     </a-ring>
     <a-circle id="btnLaboratorios" class="clickable" color="#0d0d1a" opacity="0.95" radius="0.4"
               animation__mouseenter="property: scale; to: 1.2 1.2 1.2; dur: 300; startEvents: mouseenter"
-              animation__mouseleave="property: scale; to: 1 1 1; dur: 300; startEvents: mouseleave">
-      <a-plane width="0.76" height="0.76" canvas-icon="type: carreras" material="shader: flat; transparent: true" position="0 0 0.02"></a-plane>
+              animation__mouseleave="proqperty: scale; to: 1 1 1; dur: 300; startEvents: mouseleave">
+      <a-circle radius="0.38" canvas-icon="type: carreras" material="shader: flat" position="0 0 0.02"></a-circle>
     </a-circle>
     <a-text value="Carreras que\nTransforman" align="center" baseline="top" width="1.2" wrap-count="12" font="https://cdn.aframe.io/fonts/Roboto-msdf.json" shader="msdf" color="#000000" position="0.01 -0.49 0.04"></a-text>
     <a-text id="textoBotonLabs" value="Carreras que\nTransforman" align="center" baseline="top" width="1.2" wrap-count="12" font="https://cdn.aframe.io/fonts/Roboto-msdf.json" shader="msdf" color="#FFFFFF" position="0 -0.48 0.05"></a-text>
@@ -524,7 +533,7 @@
     <a-circle id="btnNuevosLabs" class="clickable" color="#0d0d1a" opacity="0.95" radius="0.4"
               animation__mouseenter="property: scale; to: 1.2 1.2 1.2; dur: 300; startEvents: mouseenter"
               animation__mouseleave="property: scale; to: 1 1 1; dur: 300; startEvents: mouseleave">
-      <a-plane width="0.76" height="0.76" canvas-icon="type: labs" material="shader: flat; transparent: true" position="0 0 0.02"></a-plane>
+      <a-circle radius="0.38" canvas-icon="type: labs" material="shader: flat" position="0 0 0.02"></a-circle>
     </a-circle>
     <a-text value="Laboratorios\nTech" align="center" baseline="top" width="1.2" wrap-count="12" font="https://cdn.aframe.io/fonts/Roboto-msdf.json" shader="msdf" color="#000000" position="0.01 -0.49 0.04"></a-text>
     <a-text id="textoBotonNuevosLabs" value="Laboratorios\nTech" align="center" baseline="top" width="1.2" wrap-count="12" font="https://cdn.aframe.io/fonts/Roboto-msdf.json" shader="msdf" color="#FFFFFF" position="0 -0.48 0.05"></a-text>
@@ -541,7 +550,7 @@
     <a-circle id="btnYoutube" class="clickable" color="#0d0d1a" opacity="0.95" radius="0.4"
               animation__mouseenter="property: scale; to: 1.2 1.2 1.2; dur: 300; startEvents: mouseenter"
               animation__mouseleave="property: scale; to: 1 1 1; dur: 300; startEvents: mouseleave">
-      <a-plane width="0.76" height="0.76" canvas-icon="type: youtube" material="shader: flat; transparent: true" position="0 0 0.02"></a-plane>
+      <a-circle radius="0.38" canvas-icon="type: youtube" material="shader: flat" position="0 0 0.02"></a-circle>
     </a-circle>
     <a-text value="Video\n360°" align="center" baseline="top" width="1.2" wrap-count="12" font="https://cdn.aframe.io/fonts/Roboto-msdf.json" shader="msdf" color="#000000" position="0.01 -0.49 0.04"></a-text>
     <a-text id="textoBotonYoutube" value="Video\n360°" align="center" baseline="top" width="1.2" wrap-count="12" font="https://cdn.aframe.io/fonts/Roboto-msdf.json" shader="msdf" color="#FFFFFF" position="0 -0.48 0.05"></a-text>
@@ -849,9 +858,9 @@ function finalizarVideo() {
 
       const ep = document.querySelector('#panelPresentacionEsan');
       if(ep) {
-        ep.setAttribute('scale', '0 0 0');
+        ep.setAttribute('position', '0.55 2.82 -15');
         ep.removeAttribute('animation__entrar');
-        ep.setAttribute('animation__entrar', 'property: scale; from: 0 0 0; to: 1 1 1; dur: 800; easing: easeOutBack');
+        ep.setAttribute('animation__entrar', 'property: position; from: 0.55 2.82 -15; to: 0.55 2.82 -2.5; dur: 5000; easing: easeOutCubic');
       }
     }, 100);
 
